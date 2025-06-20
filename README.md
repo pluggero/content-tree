@@ -17,13 +17,13 @@ go install github.com/pluggero/content-tree@latest
 ## Usage
 
 ```bash
-content-tree -path /your/project -exclude "*.log,venv/*"
+content-tree -path /your/project -exclude "*.log,venv/**,**/obj/**"
 ```
 
 ### Flags
 
 - `-path` (default: `.`): Root directory to scan
-- `-exclude`: Comma-separated glob patterns to exclude (e.g. `*.log,venv/*`)
+- `-exclude`: Comma-separated glob patterns to exclude (e.g. `*.log,venv/**,**/obj/**`)
 
 ## Output Format
 

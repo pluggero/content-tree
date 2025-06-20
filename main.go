@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"github.com/bmatcuk/doublestar/v4"
 )
 
 var (
@@ -20,13 +21,17 @@ func shouldExclude(path string, root string, patterns []string) bool {
 	if err != nil {
 		return false
 	}
-	relPath = filepath.ToSlash(relPath) // normalize for pattern matching
+	relPath = filepath.ToSlash(relPath)
+
 	for _, pattern := range patterns {
 		pattern = strings.TrimSpace(pattern)
 		if pattern == "" {
 			continue
 		}
-		match, _ := filepath.Match(pattern, relPath)
+		match, err := doublestar.PathMatch(pattern, relPath)
+		if err != nil {
+			continue
+		}
 		if match {
 			return true
 		}
