@@ -1,6 +1,6 @@
 # content-tree
 
-**content-tree** is a simple CLI tool that recursively scans a directory, reads all files, and outputs their contents in a plain, annotated format. It's useful for code reviews, archiving, or generating context snapshots for LLMs.
+**content-tree** is a simple CLI tool that recursively scans a directory, reads all files, and outputs their contents in a plain, annotated format. It's useful for code reviews, archiving, or generating context snapshots for AI.
 
 ## Features
 
