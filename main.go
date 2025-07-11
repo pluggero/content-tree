@@ -14,6 +14,8 @@ import (
 var (
 	pathFlag    = flag.String("path", ".", "Root directory to scan")
 	excludeFlag = flag.String("exclude", "", "Comma-separated glob patterns to exclude (e.g. venv/*,*.log)")
+	maxLenFlag  = flag.Int("max-length", 0, "Maximum number of lines per prompt message (0 means no limit)")
+
 )
 
 func shouldExclude(path string, root string, patterns []string) bool {
@@ -87,6 +89,27 @@ func collectFiles(root string, excludes []string) ([]string, error) {
 	return files, err
 }
 
+// splitLines divides a string into chunks of at most maxLines lines. If maxLines <= 0, the
+// original string is returned in a single-element slice.
+func splitLines(s string, maxLines int) []string {
+	if maxLines <= 0 {
+		return []string{s}
+	}
+
+	lines := strings.Split(s, "\n")
+	var parts []string
+	for i := 0; i < len(lines); i += maxLines {
+		end := i + maxLines
+		if end > len(lines) {
+						end = len(lines)
+		}
+		part := strings.Join(lines[i:end], "\n")
+		parts = append(parts, part)
+	}
+	return parts
+}
+
+
 func main() {
 	flag.Parse()
 
@@ -104,5 +127,15 @@ func main() {
 	}
 
 	output := renderPlainOutput(root, files)
-	fmt.Print(output)
+	
+	parts := splitLines(output, *maxLenFlag)
+	totalParts := len(parts)
+
+	for i, part := range parts {
+		if *maxLenFlag > 0 {
+			fmt.Printf(">>>> START PROMPT PART %d OF %d\n%s\n<<<< END PROMPT PART %d OF %d\n\n", i+1, totalParts, part, i+1, totalParts)
+		} else {
+			fmt.Print(part)
+		}
+	}
 }

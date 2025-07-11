@@ -24,6 +24,7 @@ content-tree -path /your/project -exclude "*.log,venv/**,**/obj/**"
 
 - `-path` (default: `.`): Root directory to scan
 - `-exclude`: Comma-separated glob patterns to exclude (e.g. `*.log,venv/**,**/obj/**`)
+- `-max-length` (default: infinity): Splitting the output into multiple prompts if the line amount exceeds this value
 
 ## Output Format
 
